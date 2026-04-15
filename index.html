@@ -48,12 +48,50 @@ body{background:#000;color:#fff;overflow:hidden}
 .heart:before{top:-7px}
 .heart:after{left:-7px}
 @keyframes float{0%{transform:translateY(0) rotate(45deg);opacity:1}100%{transform:translateY(-900px) rotate(45deg);opacity:0}}
+
+/* 🔐 PASSWORD SCREEN (ONLY ADDITION) */
+#passwordPage{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:#000;
+  z-index:9999;
+}
+
+#passwordPage input{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  text-align:center;
+  outline:none;
+}
+
+#passwordPage button{
+  margin-top:15px;
+  padding:12px 20px;
+  border:none;
+  border-radius:999px;
+  background:#ff4d6d;
+  color:#fff;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
 
+<!-- 🔐 PASSWORD (ADDED ONLY) -->
+<div id="passwordPage">
+  <h1>Enter Password 🔐</h1>
+  <input id="pass" type="password" placeholder="Enter code">
+  <button onclick="checkPass()">Unlock</button>
+</div>
+
 <!-- INTRO -->
-<div id="intro" class="page">
+<div id="intro" class="page hidden">
   <h1>Hey Sakshi ❤️</h1>
   <p>I made something for you…</p>
   <button class="start-btn" onclick="startExperience()">Tap to Begin ✨</button>
@@ -88,6 +126,19 @@ body{background:#000;color:#fff;overflow:hidden}
 <div id="ending" class="fade-out">Your smile… is my peace ❤️</div>
 
 <script>
+
+/* 🔐 ONLY ADDITION */
+function checkPass(){
+  if(document.getElementById("pass").value === "1604"){
+    document.getElementById("passwordPage").style.display="none";
+    document.getElementById("intro").classList.remove("hidden");
+  } else {
+    alert("Wrong code 😢");
+  }
+}
+
+/* ORIGINAL CODE BELOW (UNCHANGED) */
+
 let idx=0; let timer; const D=5000;
 const slides=[...document.querySelectorAll('.slide')];
 const fills=[...document.querySelectorAll('.fill')];
@@ -99,8 +150,7 @@ function startExperience(){
 }
 
 function start(){runBar(idx);timer=setTimeout(next,D);}
-function runBar(i){fills.forEach((f,fi)=>{f.style.transition='none';f.style.width= fi<i?'100%':'0%'});
-  requestAnimationFrame(()=>{fills[i].style.transition=`width ${D}ms linear`;fills[i].style.width='100%';});}
+function runBar(i){fills.forEach((f,fi)=>{f.style.transition='none';f.style.width= fi<i?'100%':'0%'});requestAnimationFrame(()=>{fills[i].style.transition=`width ${D}ms linear`;fills[i].style.width='100%';});}
 function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');}
 function next(){clearTimeout(timer);if(idx<slides.length-1){idx++;show(idx);runBar(idx);timer=setTimeout(next,D);} else openLetter();}
 function prev(){clearTimeout(timer);if(idx>0){idx--;show(idx);runBar(idx);timer=setTimeout(next,D);}}
@@ -115,12 +165,11 @@ You deserve all the happiness in the world… and I just hope I can always be a 
 The way you fight the world for us… it makes me happier than you can ever imagine.
 Keep growing, keep shining… Mari Jaadi.\n\nI love you so much, baccha ❤️\n\nHappy Birthday ❤️\n— Pratham`;
 
-  let i = 0; const speed = 35; const el = document.getElementById('letterText'); el.innerHTML="";
+  let i=0; const el=document.getElementById('letterText'); el.innerHTML="";
   function type(){
-    if(i < text.length){
-      if(text.charAt(i) === '\n'){ el.innerHTML += '<br>'; }
-      else { el.innerHTML += text.charAt(i); }
-      i++; setTimeout(type, speed);
+    if(i<text.length){
+      el.innerHTML += text[i]==="\n"?"<br>":text[i];
+      i++; setTimeout(type,35);
     }
   }
   type();
@@ -129,6 +178,7 @@ Keep growing, keep shining… Mari Jaadi.\n\nI love you so much, baccha ❤️\n
 }
 
 function spawnHearts(){setInterval(()=>{const h=document.createElement('div');h.className='heart';h.style.left=Math.random()*100+'%';document.body.appendChild(h);setTimeout(()=>h.remove(),6000);},400);}
+
 </script>
 
 </body>
